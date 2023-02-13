@@ -8,10 +8,9 @@ from hashlib import sha256
 from typing import Tuple
 from threading import Thread
 from datetime import datetime
-from data_settings import EXPECTED_FIELDS, PII_CONFIG, POSTGRES_CONNECTION_CONF
+from data_settings import EXPECTED_FIELDS, PII_CONFIG, POSTGRES_CONNECTION_CONF, QUEUE_URL
 
 
-queue_url = "http://localhost:4566/000000000000/login-queue"
 logger = logging.getLogger()
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s: %(levelname)s: %(message)s"
@@ -140,9 +139,7 @@ class MessageProcessor(Thread):
             json_msg[masked_field] = self.masker(json_msg[field])
             del json_msg[field]
 
-        json_msg["app_version"] = json_msg["app_version"][
-            0
-        ]  # only keep the first version integer
+        json_msg["app_version"] = json_msg["app_version"].split('.')[0]  # only keep the first version integer
 
         return True, json_msg
 
@@ -154,7 +151,7 @@ class MessageProcessor(Thread):
         while not stop:
             try:
                 response = sqs_client.receive_message(
-                    QueueUrl=queue_url, MaxNumberOfMessages=1000, WaitTimeSeconds=10
+                    QueueUrl=QUEUE_URL, MaxNumberOfMessages=1000, WaitTimeSeconds=10
                 )
             except:
                 print("error receiving message")

@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+ localstack:
+  image: fetchdocker/data-takehome-localstack
+  container_name: ls_container
+  volumes: 
+    - ./:/opt/code/localstack/etl-python
+  ports:
+   - "4566:4566"
+
+ postgres:
+  image: fetchdocker/data-takehome-postgres
+  container_name: pg_container
+  ports:
+   - "5432:5432"
+

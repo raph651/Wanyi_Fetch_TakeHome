@@ -63,3 +63,27 @@ The application runs python scripts to fetch messages from SQS queue and write d
 -- The application runs a `run.sh` bash file on the localstack container using docker exec command. It only requires a `libpq-dev`package and a `psycopg2` python package for postgreSQL connection-client. Then data processing and writing are accomplished by a python script that tries to optimize efficiency using multi-threading.
 
 
+## Follow-up questions:
+
+● How would you deploy this application in production?
+
+-- This application is contained in the localstack container (created from localstack image). However, in the future if we want to stream the SQS message queue and insert data to database. I think I can use AWS Lambda to automate the process with dedicated instance or container. The current logging is not ideal for production, either. Other error handlers are critical too, for example, create a buffer that stores undelivered messages to a different database. 
+
+● What other components would you want to add to make this production ready?
+
+-- One component I think can boost up the application a little bit is python `Celery`. `Celery` is an efficient task scheduler that supports message brokers like Redis and RabbitMQ. It now also supports AWS SQS as a dedicated message broker. I believe with this component, the multi-processing part can be very impressively efficient.
+Since it also supports task scheduling (like AWS Lambda in a way), in the future we can also consider automating data-cleaning tasks.
+
+● How can this application scale with a growing dataset.
+
+-- If the dataset grows, one thing I think we can do is allocate the database on AWS RDS with flexible storage configurations. If the real-time messages grow exponentially, we might consider create region-based databases and serverless applications. 
+
+● How can PII be recovered later on?
+
+-- I don't think the current sha256 algorithm will make it easy to recover. I'm actually very interested in this answer to the question. Very lookforward to hearing a better solution!
+
+● What are the assumptions you made?
+
+-- We don't delete read messages from SQS queue now, but can do it in production.
+   The SQS message queue is small in size. So two seperate threads (one for reading and one for writing) should be sufficient.
+   The app_version number is a string actually, but we only care about the first version number.

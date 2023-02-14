@@ -8,7 +8,7 @@ EXPECTED_FIELDS = {
 }
 PII_CONFIG = {"ip": "masked_ip", "device_id": "masked_device_id"}
 
-QUEUR_URL = "http://localhost:4566/000000000000/login-queue"
+QUEUE_URL = "http://localhost:4566/000000000000/login-queue"
 
 POSTGRES_CONNECTION_CONF = {
     "host": "pg_container",

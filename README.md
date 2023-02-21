@@ -1,6 +1,6 @@
 # Wanyi_Fetch_TakeHome
 
-The application runs python scripts to fetch messages from SQS queue and write data entries to postgreSQL database. Thanks a lot for the detailed take home instruction! I do feel that there are a handful of ways to optimize my codes, although I've tried hard to deliver the best results. Please let me know if you have any questions or comments for the project! Any feedback is very much appreciated. I had fun with this project and thanks again!
+The application runs python scripts to fetch messages from SQS queue and write data entries to postgreSQL database.  Please let me know if you have any questions or comments for the project! Any feedback is very much appreciated. I had fun with this project and thanks again!
 
 ## Usage:
   Clone the repo:
